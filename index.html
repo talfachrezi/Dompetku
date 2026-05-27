@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('Aplikasi siap digunakan offline!', reg))
-        .catch(err => console.log('Gagal mendaftarkan mode offline', err));
-    });
-  }
-</script>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Finance Tracker</title>
+
+    <link rel="manifest" href="manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('Aplikasi siap digunakan offline!', reg))
+            .catch(err => console.log('Gagal mendaftarkan mode offline', err));
+        });
+      }
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -463,88 +465,3 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: fontColor,
-                                font: { size: 11, weight: '500' },
-                                boxWidth: 12
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // --- 5. EVENT LISTENERS & OPERASI AKSI DATA ---
-        // Aksi Simpan Transaksi Baru
-        document.getElementById('transaction-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const amtInput = document.getElementById('amount').value;
-            const catInput = document.getElementById('category').value;
-            const dateInput = document.getElementById('date').value;
-            const noteInput = document.getElementById('note').value;
-            const typeInput = document.getElementById('type').value;
-
-            const newTransaction = {
-                id: Date.now().toString(),
-                type: typeInput,
-                amount: parseFloat(amtInput),
-                category: catInput,
-                date: dateInput,
-                note: noteInput
-            };
-
-            transactions.push(newTransaction);
-            localStorage.setItem('tracker_transactions', JSON.stringify(transactions));
-            
-            // Reset input kolom isian form setelah tersimpan sukses
-            document.getElementById('amount').value = '';
-            document.getElementById('note').value = '';
-            
-            calculateAndRender();
-        });
-
-        // Aksi Update Batas Limit Bulanan Budget
-        document.getElementById('budget-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            Object.keys(budgets).forEach(cat => {
-                const targetInput = document.getElementById(`budget-${cat}`).value;
-                budgets[cat] = targetInput ? parseFloat(targetInput) : 0;
-            });
-            localStorage.setItem('tracker_budgets', JSON.stringify(budgets));
-            calculateAndRender();
-        });
-
-        // Aksi Hapus Item Transaksi Satuan Tunggal
-        window.deleteSingleItem = function(id) {
-            transactions = transactions.filter(item => item.id !== id);
-            localStorage.setItem('tracker_transactions', JSON.stringify(transactions));
-            calculateAndRender();
-        }
-
-        // Event Listener Perubahan Filter Tanggal
-        document.getElementById('filter-start').addEventListener('change', calculateAndRender);
-        document.getElementById('filter-end').addEventListener('change', calculateAndRender);
-        document.getElementById('btn-clear-filter').addEventListener('click', () => {
-            document.getElementById('filter-start').value = '';
-            document.getElementById('filter-end').value = '';
-            calculateAndRender();
-        });
-
-        // Aksi Reset Total Riwayat Menjadi 0 Mutlak (Poin 6)
-        document.getElementById('btn-reset-all').addEventListener('click', () => {
-            if (confirm('Apakah Anda yakin ingin menghapus seluruh riwayat transaksi? Tindakan ini akan mengembalikan seluruh saldo dan data keuangan Anda menjadi 0.')) {
-                transactions = [];
-                localStorage.removeItem('tracker_transactions');
-                calculateAndRender();
-            }
-        });
-
-        // Eksekusi render inisiasi awal mula aplikasi berjalan
-        calculateAndRender();
-    </script>
-</body>
-</html>
