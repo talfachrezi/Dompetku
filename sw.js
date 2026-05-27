@@ -1,23 +1,31 @@
-const CACHE_NAME = 'fintrack-cache-v1';
-const ASSETS = [
+const CACHE_NAME = 'finance-tracker-v1';
+const ASSETS_TO_CACHE = [
   'index.html',
-  'manifest.json'
+  'manifest.json',
+  'https://cdn.tailwindcss.com',
+  'https://cdn.jsdelivr.net/npm/chart.js'
 ];
 
-// Menyimpan file ke memori HP saat instalasi
-self.addEventListener('install', e => {
-  e.waitUntil(
+// Install Service Worker
+self.addEventListener('install', event => {
+  event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS);
+      console.log('Menyimpan aset ke dalam cache...');
+      return cache.addAll(ASSETS_TO_CACHE);
     })
   );
 });
 
-// Mengambil file dari memori HP (Offline Mode)
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(response => {
-      return response || fetch(e.request);
+// Aktivasi Service Worker
+self.addEventListener('activate', event => {
+  console.log('Service Worker aktif.');
+});
+
+// Ambil data dari cache saat offline
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(cachedResponse => {
+      return cachedResponse || fetch(event.request);
     })
   );
 });
