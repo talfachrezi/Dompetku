@@ -1,15 +1,22 @@
 {
   "name": "Personal Finance Tracker",
-  "short_name": "FinTrack",
+  "short_name": "FinanceTracker",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#1e293b",
+  "background_color": "#3b82f6",
   "theme_color": "#2563eb",
+  "description": "Aplikasi pencatat keuangan personal yang cerdas dan responsif.",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2454/2454261.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/2489/2489756.png",
       "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2489/2489756.png",
+      "sizes": "192x192",
       "type": "image/png"
     }
   ]
-]
+}
