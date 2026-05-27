@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('Aplikasi siap digunakan offline!', reg))
+        .catch(err => console.log('Gagal mendaftarkan mode offline', err));
+    });
+  }
+</script>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
